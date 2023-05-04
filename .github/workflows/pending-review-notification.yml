@@ -1,7 +1,8 @@
 name: Send pending review notifications to reviewer on github-discussion
 on:
   push:
-    develop
+    branches:
+      - develop
   # schedule:
   #   # Every Tuesday and Thursday at 16:00 UTC.
   #   - cron: '0 16 * * 2,4'
