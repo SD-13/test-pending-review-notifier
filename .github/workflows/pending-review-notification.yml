@@ -26,7 +26,7 @@ jobs:
           python-version: '3.8.15'
           architecture: 'x64'
       - name: Install dependencies
-        run: pip install -r ${{ github.action_path }}/requirements.txt
+        run: pip install -r requirements.txt
         shell: bash
       - name: Add path to enviornment
         run: echo "PYTHONPATH=${{ github.action_path }}" >> $GITHUB_PATH; echo $GITHUB_PATH
