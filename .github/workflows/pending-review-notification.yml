@@ -27,7 +27,7 @@ jobs:
           architecture: 'x64'
       - name: Send notification
         run: |
-          cd ${{ github.action_path }}
+          ls
           python3 -m src_graphql.index --repo=${{ github.repository }} --token=${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }} --max-wait-hours=48 --verbose
       # - name: Report if failed
       #   if: ${{ failure() }}
