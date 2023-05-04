@@ -32,8 +32,7 @@ jobs:
         run: echo "PYTHONPATH=${{ github.action_path }}" >> $GITHUB_PATH; echo $GITHUB_PATH
         shell: bash
       - name: Send notification
-        run: |
-          cd ${{ github.action_path }}
+        run:
           python3 -m src_graphql.index --repo=${{ github.repository }} --token=${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }} --max-wait-hours=48 --verbose
       # - name: Report if failed
       #   if: ${{ failure() }}
