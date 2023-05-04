@@ -2,7 +2,7 @@ name: Send pending review notifications to reviewer on github-discussion
 on:
   push:
     branches:
-      - develop
+      - master
   # schedule:
   #   # Every Tuesday and Thursday at 16:00 UTC.
   #   - cron: '0 16 * * 2,4'
@@ -26,7 +26,8 @@ jobs:
           python-version: '3.8.15'
           architecture: 'x64'
       - name: Send notification
-        run:
+        run: |
+          cd ${{ github.action_path }}
           python3 -m src_graphql.index --repo=${{ github.repository }} --token=${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }} --max-wait-hours=48 --verbose
       # - name: Report if failed
       #   if: ${{ failure() }}
