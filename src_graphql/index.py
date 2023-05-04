@@ -5,7 +5,7 @@ import logging
 import os
 import re
 
-import github_services
+from . import github_services
 
 PARSER = argparse.ArgumentParser(
     description='Send pending review notifications to reviewers.')
