@@ -12,22 +12,23 @@ on:
   # # workflow manually if needed.
   # workflow_dispatch:
 
-jobs:
-  send_notifications:
-    name: Send pending review notifications
-    runs-on:  ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04]
+runs:
+  using: "composite"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: '3.8.15'
           architecture: 'x64'
+      - name: Install dependencies
+        run: pip install -r ${{ github.action_path }}/requirements.txt
+        shell: bash
+      - name: Add path to enviornment
+        run: echo "PYTHONPATH=${{ github.action_path }}" >> $GITHUB_PATH; echo $GITHUB_PATH
+        shell: bash
       - name: Send notification
         run: |
-          ls
+          cd ${{ github.action_path }}
           python3 -m src_graphql.index --repo=${{ github.repository }} --token=${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }} --max-wait-hours=48 --verbose
       # - name: Report if failed
       #   if: ${{ failure() }}
