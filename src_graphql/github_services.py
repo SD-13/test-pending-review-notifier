@@ -5,7 +5,6 @@ from collections import defaultdict
 import logging
 import requests
 from dateutil import parser
-import schema
 from src_graphql.github_domain import PullRequest
 
 
