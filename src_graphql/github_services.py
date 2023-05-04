@@ -129,7 +129,8 @@ def create_discussion_comment(org_name, repo, body):
     body.
     """
 
-    query_category_id = ("""
+    query_category_id = """
+    {
         query($org_name: String!, $repository: String!) {
             repository(owner: $org_name, name: $repository) {
                 discussionCategories(first: 10) {
@@ -140,7 +141,8 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    """)
+    }
+    """
 
     variables = {
         "org_name": org_name,
@@ -157,7 +159,8 @@ def create_discussion_comment(org_name, repo, body):
     category_id = (category['id'] for category in data['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
 
 
-    query_discussion_id = ("""
+    query_discussion_id = """
+    {
         query ($org_name: String!, $repository: String!, $category_id: ID!) {
             repository(owner: $org_name, name: $repository) {
                 discussions(categoryId: $category_id, first: 10) {
@@ -170,7 +173,8 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    """)
+    }
+    """
 
     variables = {
         "org_name": org_name,
@@ -188,7 +192,8 @@ def create_discussion_comment(org_name, repo, body):
     discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id']
     # discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id'] if data['data']['repository']['discussions']['edges'][0]['node']['title'] == "Pending Reviews" else None
 
-    comment_in_discussion = ("""
+    comment_in_discussion = """
+    {
         mutation comment($discussion_id: ID!, $comment: String!) {
             addDiscussionComment(input: {discussionId: $discussion_id, body: $comment}) {
                 clientMutationId
@@ -197,7 +202,8 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    """)
+    }
+    """
 
     variables = {
         "discussion_id": discussion_id,
