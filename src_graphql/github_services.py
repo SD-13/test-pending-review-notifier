@@ -130,7 +130,6 @@ def create_discussion_comment(org_name, repo, body):
     """
 
     query_category_id = """
-    {
         query($org_name: String!, $repository: String!) {
             repository(owner: $org_name, name: $repository) {
                 discussionCategories(first: 10) {
@@ -141,7 +140,6 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    }
     """
 
     variables = {
@@ -158,7 +156,7 @@ def create_discussion_comment(org_name, repo, body):
     print(data)
 
     # Check for a category with the name. If it exists, use that category id
-    category_id = (category['id'] for category in data['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
+    category_id = (category['id'] for category in data['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
 
 
     query_discussion_id = """
