@@ -153,14 +153,12 @@ def create_discussion_comment(org_name, repo, body):
 
     data = response.json()
     print("request made successfuly")
-    print(data)
 
     # Check for a category with the name. If it exists, use that category id
     category_id = (category['id'] for category in data['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
 
 
     query_discussion_id = """
-    {
         query ($org_name: String!, $repository: String!, $category_id: ID!) {
             repository(owner: $org_name, name: $repository) {
                 discussions(categoryId: $category_id, first: 10) {
@@ -173,7 +171,6 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    }
     """
 
     variables = {
@@ -187,12 +184,13 @@ def create_discussion_comment(org_name, repo, body):
     )
 
     data = response.json()
+    print(data)
+
     # Assuming the particular category will have only one discussion
     discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id']
     # discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id'] if data['data']['repository']['discussions']['edges'][0]['node']['title'] == "Pending Reviews" else None
 
     comment_in_discussion = """
-    {
         mutation comment($discussion_id: ID!, $comment: String!) {
             addDiscussionComment(input: {discussionId: $discussion_id, body: $comment}) {
                 clientMutationId
@@ -201,7 +199,6 @@ def create_discussion_comment(org_name, repo, body):
                 }
             }
         }
-    }
     """
 
     variables = {
@@ -212,5 +209,9 @@ def create_discussion_comment(org_name, repo, body):
     response = requests.post(
         GITHUB_GRAPHQL_URL, json={'query': comment_in_discussion, 'variables': variables}, headers=_get_request_headers()
     )
+
+    data = response.json()
+    print("commenting in discussion")
+    print(data)
 
     response.raise_for_status()
