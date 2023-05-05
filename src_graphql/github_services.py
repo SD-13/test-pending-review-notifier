@@ -154,9 +154,11 @@ def create_discussion_comment(org_name, repo, body):
     )
 
     data = response.json()
+    print("request made successfuly")
+    print(data)
 
     # Check for a category with the name. If it exists, use that category id
-    category_id = (category['id'] for category in data['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
+    category_id = (category['id'] for category in data['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
 
 
     query_discussion_id = """
