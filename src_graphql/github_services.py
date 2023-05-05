@@ -151,12 +151,11 @@ def create_discussion_comment(org_name, repo, body):
         GITHUB_GRAPHQL_URL, json={'query': query_category_id, 'variables': variables}, headers=_get_request_headers()
     )
 
-    data = response.json()
     print("request made successfuly")
-    print(data)
+    print(response)
 
     # Check for a category with the name. If it exists, use that category id
-    category_id = (category['id'] for category in data['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
+    category_id = (category['id'] for category in response['data']['repository']['discussionCategories']['nodes'] if category['name'] == 'Reviewer notifications')
 
 
     query_discussion_id = """
@@ -186,10 +185,9 @@ def create_discussion_comment(org_name, repo, body):
         GITHUB_GRAPHQL_URL, json={'query': query_discussion_id, 'variables': variables}, headers=_get_request_headers()
     )
 
-    data = response.json()
 
     # Assuming the particular category will have only one discussion
-    discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id']
+    discussion_id = response['data']['repository']['discussions']['edges'][0]['node']['id']
     # discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id'] if data['data']['repository']['discussions']['edges'][0]['node']['title'] == "Pending Reviews" else None
 
     comment_in_discussion = """
