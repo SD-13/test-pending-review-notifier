@@ -186,6 +186,7 @@ def create_discussion_comment(org_name, repo, body):
         GITHUB_GRAPHQL_URL, json={'query': query_discussion_id, 'variables': variables}, headers=_get_request_headers()
     )
 
+    data = response.json()
     # Assuming the particular category will have only one discussion
     discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id']
     # discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id'] if data['data']['repository']['discussions']['edges'][0]['node']['title'] == "Pending Reviews" else None
