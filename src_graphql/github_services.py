@@ -5,7 +5,7 @@ from collections import defaultdict
 import logging
 import requests
 from dateutil import parser
-from src_graphql.github_domain import PullRequest
+from github_domain import PullRequest
 
 
 _TOKEN = None
@@ -40,7 +40,7 @@ def _get_request_headers():
     """Retunrs the request hearders for github-request."""
     return {
         'Accept': 'application/vnd.github.v3+json',
-        'Authorization': 'token {0}'.format(_TOKEN)
+        'Authorization': f'token {_TOKEN}'
     }
 
 @check_token
@@ -83,6 +83,7 @@ def get_prs_assigned_to_reviewers(org_name, repository, wait_hours):
                     reviewer_to_assigned_prs[reviewer.name].append(pull_request)
     return reviewer_to_assigned_prs
 
+
 def __process_activity(pull_request, event):
     """Process activity and updates assignee timestamps."""
     if event['event'] != 'assigned':
@@ -109,7 +110,7 @@ def update_assignee_timestamp(org_name, repository, pr_list):
                 params={'page': page_number, 'per_page': 100},
                 headers={
                     'Accept': 'application/vnd.github.mockingbird-preview+json',
-                    'Authorization': 'token {0}'.format(_TOKEN)}
+                    'Authorization': f'token {_TOKEN}'}
             )
             response.raise_for_status()
             timeline_subset = response.json()
@@ -148,23 +149,18 @@ def create_discussion_comment(org_name, repo, body):
     }
 
     response = requests.post(
-        GITHUB_GRAPHQL_URL, json={'query': query_category_id, 'variables': variables}, headers=_get_request_headers()
+        GITHUB_GRAPHQL_URL,
+        json={'query': query_category_id, 'variables': variables},
+        headers=_get_request_headers()
     )
 
     data = response.json()
-    print("request made successfuly")
 
-    # Check for a category with the name. If it exists, use that category id
     category_id = ""
     for category in data['data']['repository']['discussionCategories']['nodes']:
         if category['name'] == 'Reviewer notifications':
             category_id = category['id']
             break
-        else:
-            continue
-        
-    print(category_id)
-    print(str(category_id))
 
 
     query_discussion_id = """
@@ -189,15 +185,15 @@ def create_discussion_comment(org_name, repo, body):
     }
 
     response = requests.post(
-        GITHUB_GRAPHQL_URL, json={'query': query_discussion_id, 'variables': variables}, headers=_get_request_headers()
+        GITHUB_GRAPHQL_URL,
+        json={'query': query_discussion_id, 'variables': variables},
+        headers=_get_request_headers()
     )
 
     data = response.json()
-    print(data)
 
     # Assuming the particular category will have only one discussion
     discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id']
-    # discussion_id = data['data']['repository']['discussions']['edges'][0]['node']['id'] if data['data']['repository']['discussions']['edges'][0]['node']['title'] == "Pending Reviews" else None
 
     comment_in_discussion = """
         mutation comment($discussion_id: ID!, $comment: String!) {
@@ -216,11 +212,8 @@ def create_discussion_comment(org_name, repo, body):
     }
 
     response = requests.post(
-        GITHUB_GRAPHQL_URL, json={'query': comment_in_discussion, 'variables': variables}, headers=_get_request_headers()
+        GITHUB_GRAPHQL_URL,
+        json={'query': comment_in_discussion, 'variables': variables},
+        headers=_get_request_headers()
     )
-
-    data = response.json()
-    print("commenting in discussion")
-    print(data)
-
     response.raise_for_status()

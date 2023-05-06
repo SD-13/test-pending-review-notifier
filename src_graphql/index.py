@@ -5,7 +5,7 @@ import logging
 import os
 import re
 
-from . import github_services
+import github_services
 
 PARSER = argparse.ArgumentParser(
     description='Send pending review notifications to reviewers.')
@@ -41,10 +41,9 @@ def generate_message(username, pr_list):
     """
     template_path = '.github/PENDING_REVIEW_NOTIFICATION_TEMPLATE.md'
     if not os.path.exists(template_path):
-        raise Exception(
-            'Please add a template on path: {0}'.format(template_path))
+        raise Exception(f'Please add a template on path: {template_path}')
     message = ''
-    with open(template_path, 'r') as file:
+    with open(template_path, 'r', encoding='UTF-8') as file:
         message = file.read()
 
     message = re.sub(r'\{\{ *username *\}\}', '@' + username, message)
@@ -59,11 +58,10 @@ def send_notification(username, pull_requests, org_name, repo, test_mode):
     for pull_request in pull_requests:
         assignee = pull_request.get_assignee(username)
         pr_list_messages.append(
-            '- [#{0}]({1}) [Waiting from the last {2}]'.format(
-                pull_request.number, pull_request.url,
-                assignee.get_readable_waiting_time()))
+            f'- [#{pull_request.number}]({pull_request.url}) [Waiting from the'
+            f'last {assignee.get_readable_waiting_time()}]')
 
-    title = '[@{0}] Pending review on PRs'.format(username)
+    title = f'[@{username}] Pending review on PRs'
 
     # *** Revert it back when done ***
     # body = generate_message(username, '\n'.join(pr_list_messages))

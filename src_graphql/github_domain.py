@@ -21,25 +21,25 @@ class Assignee:
         hours, _ = divmod(delta.seconds, 3600)
         waiting_time = []
         if days:
-            waiting_time.append('{0} day{1}'.format(
-                days, 's' if days > 1 else ''))
+            waiting_time.append(f'{days} day{1}'.format(
+                's' if days > 1 else ''))
 
         if hours:
-            waiting_time.append('{0} hour{1}'.format(
-                hours, 's' if hours > 1 else ''))
+            waiting_time.append(f'{hours} hour{1}'.format(
+                's' if hours > 1 else ''))
 
         return ', '.join(waiting_time)
 
     def __repr__(self):
-        return '@{0} assigned on {1}'.format(self.name, self.timestamp)
+        return f'@{self.name} assigned on {self.timestamp}'
 
 class PullRequest:
     """A class representing a pull request on github."""
     def __init__(self, url, number, author, title, assignees):
         self.url = url
         self.number = number
-        self.title = title
         self.author = author
+        self.title = title
         self.assignees = assignees
 
     def is_reviewer_assigned(self):
@@ -52,7 +52,7 @@ class PullRequest:
         return next(filter(lambda x: x.name == user, self.assignees), None)
 
     def __repr__(self):
-        return 'PR #{0} by {1}'.format(self.number, self.author)
+        return f'PR #{self.number} by {self.author}'
 
     @classmethod
     def from_github_response(cls, pr_dict):
