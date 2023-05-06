@@ -5,7 +5,7 @@ from collections import defaultdict
 import logging
 import requests
 from dateutil import parser
-from github_domain import PullRequest
+from src_graphql.github_domain import PullRequest
 
 
 _TOKEN = None
