@@ -214,7 +214,7 @@ def create_discussion_comment(org_name: str, repo: str, body: str) -> None:
 
     discussion_id = None
     category_name = 'Reviewer notifications'
-    discussion_title = 'Pending reviews'
+    discussion_title = 'Pending Reviews'
     discussion_categories = (
         data['data']['repository']['discussionCategories']['nodes'])
 
@@ -227,7 +227,7 @@ def create_discussion_comment(org_name: str, repo: str, body: str) -> None:
                     break
             if discussion_id is None:
                 raise Exception('Discussion with title %s not found, please create'
-                'a discussion with that title.' % discussion_title)
+                ' a discussion with that title.' % discussion_title)
             break
         
     if discussion_id is None:
