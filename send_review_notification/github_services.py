@@ -212,28 +212,27 @@ def create_discussion_comment(org_name: str, repo: str, body: str) -> None:
 
     data = response.json()
 
-    discussion_id = ''
+    discussion_id = None
     category_name = 'Reviewer notifications'
     discussion_title = 'Pending reviews'
     discussion_categories = (
         data['data']['repository']['discussionCategories']['nodes'])
-    try:
-        for category in discussion_categories:
-            if category['name'] == category_name:
-                try:
-                    discussions = category['repository']['discussions']['edges']
-                    for discussion in discussions:
-                        if discussion['node']['title'] == discussion_title:
-                            discussion_id = discussion['node']['id']
-                            break
-                except Exception as e:
-                    raise Exception(
-                        'Discussion with title %s not found, please create'
-                        'a discussion with that title.' % (
-                        discussion_title)) from e
-    except Exception as e:
+
+    for category in discussion_categories:
+        if category['name'] == category_name:
+            discussions = category['repository']['discussions']['edges']
+            for discussion in discussions:
+                if discussion['node']['title'] == discussion_title:
+                    discussion_id = discussion['node']['id']
+                    break
+            if discussion_id is None:
+                raise Exception('Discussion with title %s not found, please create'
+                'a discussion with that title.' % discussion_title)
+            break
+        
+    if discussion_id is None:
         raise Exception('%s category is missing in GitHub Discussion.' % (
-            category_name)) from e
+            category_name))
 
     query = """
         mutation comment($discussion_id: ID!, $comment: String!) {
