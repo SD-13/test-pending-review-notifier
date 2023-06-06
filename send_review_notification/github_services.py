@@ -172,7 +172,13 @@ def update_assignee_timestamp(
 
 
 @check_token
-def create_discussion_comment(org_name: str, repo: str, body: str) -> None:
+def create_discussion_comment(
+    org_name: str,
+    repo: str,
+    discussion_category: str,
+    discussion_title: str,
+    body: str
+) -> None:
     """Comment in the existing GitHub discussion."""
 
     query = """
@@ -213,13 +219,13 @@ def create_discussion_comment(org_name: str, repo: str, body: str) -> None:
     data = response.json()
 
     discussion_id = None
-    category_name = 'Reviewer notifications'
-    discussion_title = 'Pending Reviews'
+    # category_name = 'Reviewer notifications'
+    # discussion_title = 'Pending Reviews'
     discussion_categories = (
         data['data']['repository']['discussionCategories']['nodes'])
 
     for category in discussion_categories:
-        if category['name'] == category_name:
+        if category['name'] == discussion_category:
             discussions = category['repository']['discussions']['edges']
             for discussion in discussions:
                 if discussion['node']['title'] == discussion_title:

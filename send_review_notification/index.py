@@ -77,6 +77,8 @@ def send_notification(
     pull_requests: List[github_domain.PullRequest],
     org_name: str,
     repo: str,
+    discussion_category: str,
+    discussion_title: str,
     test_mode: Optional[str]
 ) -> None:
     """Sends notification on github-discussion."""
@@ -98,7 +100,7 @@ def send_notification(
         logging.info('Logging notification title in test mode: %s', title)
         return
 
-    github_services.create_discussion_comment(org_name, repo, body)
+    github_services.create_discussion_comment(org_name, repo,discussion_category,discussion_title ,body)
 
 
 def main(args: Optional[List[str]]=None) -> Literal[0]:
@@ -106,6 +108,8 @@ def main(args: Optional[List[str]]=None) -> Literal[0]:
     parsed_args = PARSER.parse_args(args=args)
 
     # org_name, repo = parsed_args.repo.split('/')
+    discussion_category = parsed_args.category
+    discussion_title = parsed_args.title
     org_name = 'oppia'
     repo = 'oppia'
 
@@ -126,7 +130,7 @@ def main(args: Optional[List[str]]=None) -> Literal[0]:
     org_name = 'SD-13'
     repo = 'review-notification-bot'
     for reviewer_name, prs in reviewer_to_assigned_prs.items():
-        send_notification(reviewer_name, prs, org_name, repo, test_mode)
+        send_notification(reviewer_name, prs, org_name, repo, discussion_category, discussion_title, test_mode)
 
     return 0
 
