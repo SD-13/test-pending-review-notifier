@@ -38,9 +38,13 @@ PARSER.add_argument(
     type=str,
     help='The repository name for fetching the pull requests.')
 PARSER.add_argument(
-    '--team',
+    '--category',
     type=str,
-    help='The team name for sending notification through API.')
+    help='The category name for the discussion.')
+PARSER.add_argument(
+    '--title',
+    type=str,
+    help='The title of the discussion.')
 PARSER.add_argument(
     '--max-wait-hours',
     type=int,
