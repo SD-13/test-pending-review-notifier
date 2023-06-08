@@ -238,7 +238,7 @@ def create_discussion_comment(
         
     if discussion_id is None:
         raise Exception('%s category is missing in GitHub Discussion.' % (
-            category_name))
+            discussion_category))
 
     query = """
         mutation comment($discussion_id: ID!, $comment: String!) {
