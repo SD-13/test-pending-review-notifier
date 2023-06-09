@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: '3.8.15'
           architecture: 'x64'
-      - name: Install dependencies
+      - name: Install Mypy
         run: pip install mypy
       - name: Install dependencies
         run: pip install -r requirements.txt
