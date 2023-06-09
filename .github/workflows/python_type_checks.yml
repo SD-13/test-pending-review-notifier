@@ -22,6 +22,6 @@ jobs:
       - name: Install dependencies
         run: pip install mypy
       - name: Install al missing stub packages
-        run: mypy --install-types
+        run: mypy src --install-types
       - name: Run Mypy checks
         run: mypy src/
