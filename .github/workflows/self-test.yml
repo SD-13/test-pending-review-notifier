@@ -20,7 +20,7 @@ jobs:
       - name: Send notification(Test)
         run: |
           cd ${{ github.action_path }}
-          python3 -m src_graphql.index --repo=${{ github.repository }} --token=${{ secrets.GITHUB_TOKEN }} --max-wait-hours=0 --verbose
+          python3 -m src.index --repo=${{ github.repository }} --token=${{ secrets.GITHUB_TOKEN }} --max-wait-hours=0 --verbose
         with:
           team-slug: test-team
           # GITHUB_TOKEN does not have right to send notifications, this is used

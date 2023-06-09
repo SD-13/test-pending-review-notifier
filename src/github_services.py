@@ -19,12 +19,11 @@ from __future__ import annotations
 import collections
 import datetime
 import logging
-
-from send_review_notification import github_domain
-
-from dateutil import parser
-import requests
 from typing import Any, Callable, DefaultDict, Dict, List, Optional, Union
+import requests
+from dateutil import parser
+from src import github_domain
+
 
 _TOKEN = None
 GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql'
@@ -219,8 +218,6 @@ def create_discussion_comment(
     data = response.json()
 
     discussion_id = None
-    # category_name = 'Reviewer notifications'
-    # discussion_title = 'Pending Reviews'
     discussion_categories = (
         data['data']['repository']['discussionCategories']['nodes'])
 
@@ -232,13 +229,13 @@ def create_discussion_comment(
                     discussion_id = discussion['node']['id']
                     break
             if discussion_id is None:
-                raise Exception('Discussion with title %s not found, please create'
-                ' a discussion with that title.' % discussion_title)
+                raise Exception(
+                    f'Discussion with title {discussion_title} not found, please create a '
+                    'discussion with that title.')
             break
-        
+
     if discussion_id is None:
-        raise Exception('%s category is missing in GitHub Discussion.' % (
-            discussion_category))
+        raise Exception(f'{discussion_category} category is missing in GitHub Discussion.')
 
     query = """
         mutation comment($discussion_id: ID!, $comment: String!) {

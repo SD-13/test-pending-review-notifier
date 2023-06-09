@@ -21,10 +21,10 @@ import logging
 import os
 import re
 
-from send_review_notification import github_domain
-from send_review_notification import github_services
-
 from typing import List, Literal, Optional
+from src import github_domain
+from src import github_services
+
 
 
 PARSER = argparse.ArgumentParser(
@@ -104,7 +104,8 @@ def send_notification(
         logging.info('Logging notification title in test mode: %s', title)
         return
 
-    github_services.create_discussion_comment(org_name, repo,discussion_category,discussion_title ,body)
+    github_services.create_discussion_comment(
+        org_name, repo, discussion_category, discussion_title, body)
 
 
 def main(args: Optional[List[str]]=None) -> Literal[0]:
@@ -134,7 +135,8 @@ def main(args: Optional[List[str]]=None) -> Literal[0]:
     org_name = 'SD-13'
     repo = 'review-notification-bot'
     for reviewer_name, prs in reviewer_to_assigned_prs.items():
-        send_notification(reviewer_name, prs, org_name, repo, discussion_category, discussion_title, test_mode)
+        send_notification(
+            reviewer_name, prs, org_name, repo, discussion_category, discussion_title, test_mode)
 
     return 0
 
