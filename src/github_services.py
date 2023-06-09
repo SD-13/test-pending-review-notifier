@@ -30,8 +30,6 @@ GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql'
 PULL_REQUESTS_URL_TEMPLATE = 'https://api.github.com/repos/{0}/{1}/pulls'
 ISSUE_TIMELINE_URL_TEMPLATE = (
     'https://api.github.com/repos/{0}/{1}/issues/{2}/timeline')
-CREATE_DISCUSSION_URL_TEMPLATE = (
-    'https://api.github.com/orgs/{0}/teams/{1}/discussions')
 
 
 def init_service(token: Optional[str]=None) -> None:
