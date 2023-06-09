@@ -21,7 +21,7 @@ jobs:
           architecture: 'x64'
       - name: Install dependencies
         run: pip install mypy
-      - name: Install al missing stub packages
-        run: mypy --install-types
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Run Mypy checks
         run: mypy src/
