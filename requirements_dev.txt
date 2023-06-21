@@ -1,2 +1,0 @@
-requests-mock==1.9.3
-pylint==2.11.1
