@@ -19,8 +19,8 @@ jobs:
           architecture: 'x64'
       - uses: SD-13/pending-review-notifications@main
         with:
-          category-name: Reviewer notifications
-          discussion-title: Pending Reviews
+          category-name: 'Reviewer notifications'
+          discussion-title: 'Pending Reviews'
           repo-token: ${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }}
           review-turnaround-hours: 48
       - name: Report if failed
