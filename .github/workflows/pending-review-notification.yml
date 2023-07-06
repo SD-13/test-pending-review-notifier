@@ -22,7 +22,6 @@ jobs:
           category-name: Reviewer_notifications
           discussion-title: Pending_Reviews
           repo-token: ${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }}
-          review-turnaround-hours: 48
       - name: Report if failed
         if: ${{ failure() }}
         uses: ./.github/actions/send-webhook-notification
