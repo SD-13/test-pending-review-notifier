@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.8.15'
           architecture: 'x64'
-      - uses: SD-13/pending-review-notifier@e9fd9cdacb9dafcb4bb5eb541703d032740473c8
+      - uses: SD-13/pending-review-notifier@bc0ed95fbb1a60fafcbae7837d94b18ea9521a4b
         with:
           category-name: Notify\ Reviewers
           discussion-title: Pending\ Reviews
