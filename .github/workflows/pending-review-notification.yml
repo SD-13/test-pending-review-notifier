@@ -20,6 +20,5 @@ jobs:
       - uses: SD-13/stale-review-request-notifier@create_new_discussions
         with:
           category-name: Notify\ Reviewers2
-          discussion-title: Pending\ Reviews
           repo-token: ${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }}
           review-turnaround-hours: 48
