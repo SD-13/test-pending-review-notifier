@@ -1,5 +1,6 @@
 name: Send pending review notifications to reviewer on github-discussion
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
