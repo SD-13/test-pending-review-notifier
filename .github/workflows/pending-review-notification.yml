@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.8.15'
           architecture: 'x64'
-      - uses: SD-13/stale-review-request-notifier@create_new_discussions
+      - uses: SD-13/stale-review-request-notifier@develop
         with:
           category-name: Notify\ Reviewers2
           repo-token: ${{ secrets.DISCUSSION_NOTIFICATION_TOKEN }}
